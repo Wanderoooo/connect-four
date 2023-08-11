@@ -22,7 +22,7 @@ function App() {
 
   }
 
-  function makeDiagSolutionsDArray(selectedIdArray) {
+  function makeDiagSolutionsTArray(selectedIdArray) {
     let allDiagSolnTArray = [
       [
         [selectedIdArray[0] - 3, selectedIdArray[0] + 3],
