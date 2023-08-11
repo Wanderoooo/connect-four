@@ -1,7 +1,7 @@
 import React from 'react'
 import redPiece from '../assets/redPiece.png'
 import yellowPiece from '../assets/yellowPiece.png'
-import whitePiece from '../assets/whitePiece.png'
+import whitePiece from '../assets/whitePiece.jpg'
 
 function GamePiece({ color }) {
     if (color === 'red') {
