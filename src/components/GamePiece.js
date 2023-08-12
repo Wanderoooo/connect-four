@@ -1,17 +1,30 @@
 import React from 'react'
+import { useState } from 'react'
 import redPiece from '../assets/redPiece.png'
 import yellowPiece from '../assets/yellowPiece.png'
 import whitePiece from '../assets/whitePiece.jpg'
 
-function GamePiece({ color }) {
+export default function GamePiece() {
+    const [color, setColor] = useState('white');
     if (color === 'red') {
-        return <img src={redPiece} alt='redPiece' width='100px' />;
+        return <img src={redPiece} alt='redPiece' width='100px' onClick={setYellow}/>; //onClicks are just making sure i can change states
     }
     if (color === 'yellow') {
-        return <img src={yellowPiece} alt='yellowPiece' width='100px' />;
+        return <img src={yellowPiece} alt='yellowPiece' width='100px' onClick={setWhite}/>;
     } else {
-        return <img src={whitePiece} alt='whitePiece' width='100px' />;
+        return <img src={whitePiece} alt='whitePiece' width='100px' onClick={setRed}/>;
     }
-}
 
-export default GamePiece;
+    function setRed() {
+        setColor('red');
+    }
+
+    function setYellow() {
+        setColor('yellow');
+    }
+
+    function setWhite() {
+        setColor('white');
+    }
+
+}

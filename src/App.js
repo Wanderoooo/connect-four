@@ -1,5 +1,5 @@
 import React from 'react';
-import GamePiece from './components/GamePiece';
+import GameBoard from './components/GameBoard.js';
 import './App.css';
 
 
@@ -87,7 +87,7 @@ function App() {
 
   return (
     <div className="App">
-      <GamePiece color='red' />
+      <GameBoard />
     </div>
   );
 }
