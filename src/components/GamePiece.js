@@ -4,8 +4,8 @@ import redPiece from '../assets/redPiece.png'
 import yellowPiece from '../assets/yellowPiece.png'
 import whitePiece from '../assets/whitePiece.jpg'
 
-export default function GamePiece() {
-    const [color, setColor] = useState('white');
+export default function GamePiece({initialColor}) {
+    const [color, setColor] = useState(initialColor);
     if (color === 'red') {
         return <img src={redPiece} alt='redPiece' width='100px' onClick={setYellow}/>; //onClicks are just making sure i can change states
     }
