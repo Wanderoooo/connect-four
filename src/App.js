@@ -84,10 +84,10 @@ function App() {
   return Math.max(firstIndexNumOfOccur, secondIndexNumOfOccur) >= 4;
 }
 
-
+  const theBoard = <GameBoard />;
   return (
     <div className="App">
-      <GameBoard />
+      {theBoard}
     </div>
   );
 }
