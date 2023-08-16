@@ -6,16 +6,21 @@ import DropArrow from "./DropArrow";
 
 export default function GameBoard() {
 
-    const [pieces, setPieces] = useState([
-        [0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 1, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0]
-        ] //actual inital board state is all white, there's one red dot there for fun
-    );
 
+
+    const [pieces, setPieces] = useState(() => {
+        let res = [];
+        let row = [];
+        for (let i = 7; i >= 1; i--) {
+            for (let j = 1; j <= 7; j++) {
+                row.push(<GamePiece id={[j, i]} />);
+            }
+            res.push(row);
+            row = [];
+        }
+        return res;
+    });
+    
     // n is the target color; 
     // 0 -> white
     // 1 -> red
@@ -29,30 +34,18 @@ export default function GameBoard() {
         )
     }
 
-    const getColor = (n) => {
-        if (n === 1) {
-            return 'red';
-        }
-        if (n === 2) {
-            return 'yellow';
-        }
-        return 'white'; 
-    }
-
-    const renderTableRow = (rowData) => {
-        return (
-            <tr>
-                <td>
-                    {rowData.map((item, i) => 
-                        ( <GamePiece initialColor={getColor(item)}/>))}
-                </td>
-            </tr>
-        )
-    }
 
     return (
         <table className='board'>
-            {pieces.map((item, i) => (renderTableRow(item)))}
+            {pieces.map((row) => {
+                return (
+                    <tr>
+                        <td>
+                            {row}
+                        </td>
+                    </tr>
+                )}
+            )}
         </table>
     )
 }
