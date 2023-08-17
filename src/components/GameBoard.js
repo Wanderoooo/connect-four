@@ -11,7 +11,7 @@ export default function GameBoard() {
         let row = [];
         for (let i = 7; i >= 1; i--) {
             for (let j = 1; j <= 7; j++) {
-                row.push(<GamePiece initialColor='white' id={[j, i]} />);
+                row.push(<GamePiece initialColor={'white'} id={[i, j]} />);
             }
             res.push(row);
             row = [];
@@ -24,21 +24,20 @@ export default function GameBoard() {
     // 1 -> red
     // 2 -> yellow
     const changePiece = (row, column, newPiece) => {
-        const rowToSlice = pieces[row];
-        setPieces(
-            [pieces.slice(0, row),
-                [rowToSlice.slice(0, column), newPiece, rowToSlice.slice(column + 1, rowToSlice.length)],
-                pieces.slice(row + 1, pieces.length)]
-        )
+        const res = pieces;
+        res[row][column] = newPiece;
+        setPieces(res);
+        console.log(pieces);
+        
     }
 
 
     //drops a colored piece at specified column, 1-based indexing
     function drop(column) {
-        if (pieces[7 - 1][column - 1].color == 'white') {
+        //if (pieces[7 - 1][column - 1].a == 'white') {
             console.log(column)
-            changePiece(7 - 1, column - 1, <GamePiece initialColor={'red'} />)
-        }
+            changePiece(7 - 1, column - 1, <GamePiece initialColor={'red'} id={[99, column]}/>)
+        //}
         console.log('sleepy')
     }
 
