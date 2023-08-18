@@ -24,8 +24,8 @@ export default function GameBoard() {
     // 1 -> red
     // 2 -> yellow
     const changePiece = (row, column, newPiece) => {
+        pieces[row][column] = newPiece;
         const res = pieces;
-        res[row][column] = newPiece;
         setPieces(res);
         console.log(pieces);
         
@@ -36,9 +36,9 @@ export default function GameBoard() {
     function drop(column) {
         //if (pieces[7 - 1][column - 1].a == 'white') {
             console.log(column)
-            changePiece(7 - 1, column - 1, <GamePiece initialColor={'red'} id={[99, column]}/>)
+            changePiece(7 - 1, column - 1, <GamePiece initialColor={"red"} id={[99, column]}/>)
         //}
-        console.log('sleepy')
+        
     }
 
     return (

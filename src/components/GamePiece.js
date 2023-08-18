@@ -7,7 +7,7 @@ import whitePiece from '../assets/whitePiece.jpg'
 export default function GamePiece({initialColor, id}) {
 
     const [color, setColor] = useState(initialColor);
-    if (color === 'red') {
+    if (color === "red") {
         return <img src={redPiece} alt='redPiece' width='100px' onClick={setYellow}/>; //onClicks are just making sure i can change states
     }
     if (color === 'yellow') {
