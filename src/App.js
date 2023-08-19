@@ -1,5 +1,7 @@
-import logo from './logo.svg';
+import React from 'react';
+import GameBoard from './components/GameBoard.js';
 import './App.css';
+
 
 function App() {
 
@@ -22,7 +24,7 @@ function App() {
 
   }
 
-  function makeDiagSolutionsDArray(selectedIdArray) {
+  function makeDiagSolutionsTArray(selectedIdArray) {
     let allDiagSolnTArray = [
       [
         [selectedIdArray[0] - 3, selectedIdArray[0] + 3],
@@ -82,25 +84,13 @@ function App() {
   return Math.max(firstIndexNumOfOccur, secondIndexNumOfOccur) >= 4;
 }
 
-
+  const theBoard = <GameBoard />;
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {theBoard}
     </div>
   );
 }
+
 
 export default App;
