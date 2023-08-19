@@ -18,11 +18,13 @@ export default function GameBoard() {
         }
         return res;
     });
-    
-    // n is the target color; 
-    // 0 -> white
+
+    // 0 -> game over
     // 1 -> red
     // 2 -> yellow
+    const [turn, setTurn] = useState(1);
+    
+    
     const changePiece = (row, column, newPiece) => {
         const res = [];
         for (let i = 0; i < pieces.length; i++) {
@@ -30,18 +32,40 @@ export default function GameBoard() {
         }
         res[row][column] = newPiece;
         setPieces(res);
-        console.log(pieces);
-        
     }
 
 
     //drops a colored piece at specified column, 1-based indexing
     function drop(column) {
-        //if (pieces[7 - 1][column - 1].a == 'white') {
-            console.log(column)
-            changePiece(7 - 1, column - 1, <GamePiece color={'red'} id={[99, column]}/>)
-        //}
-        
+        let toDrop;
+        if (turn === 1) {
+            toDrop = <GamePiece color={'red'} id={[99, column]}/>;
+        } else if (turn === 2) {
+            toDrop = <GamePiece color={'yellow'} id={[99, column]}/>;
+        }
+        let pieceCol = [];
+        for (let i = 0; i < pieces.length; i++) {
+            pieceCol.push(pieces[i][column - 1])
+        }
+        if (findHighestFilled(pieceCol) !== pieceCol.length) {
+            console.log(pieces[0][0]);
+            changePiece(6 - findHighestFilled(pieceCol), column - 1, toDrop);
+            if (turn === 1) {setTurn(2)} else if (turn === 2) {setTurn(1)};
+        }
+
+            
+
+    }
+
+    function findHighestFilled(pieceCol) {
+        if (pieceCol[pieceCol.length - 1].props.color === 'white') {
+            return 0;
+        }
+        for (let i = 0; i < pieceCol.length; i++) {
+            if (pieceCol[i].props.color !== 'white') {
+                return pieceCol.length - i;
+            }
+        }
     }
 
     return (
