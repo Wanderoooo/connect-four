@@ -4,7 +4,7 @@ import GamePiece from "./GamePiece";
 import './GameBoard.css';
 import DropArrow from "./DropArrow";
 
-export default function GameBoard() {
+export default function GameBoard(props) {
 
     const [pieces, setPieces] = useState(() => {
         let res = [];

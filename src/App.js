@@ -5,6 +5,8 @@ import './App.css';
 
 function App() {
 
+  const [isWin, setIsWin] = React.useState(false)
+  
   function handleWin({selectedIdArray, idsDoubleArray}) {
     const isWin = checkGreaterEqualsFour(selectedIdArray, idsDoubleArray) ||
     checkCross(selectedIdArray, idsDoubleArray);
@@ -31,7 +33,7 @@ function App() {
         [selectedIdArray[0] - 2, selectedIdArray[0] + 2],
         [selectedIdArray[0] - 1, selectedIdArray[0] + 1],
         [selectedIdArray[0], selectedIdArray[0]]
-      ]
+      ],
 
       [
         [selectedIdArray[0] - 2, selectedIdArray[0] + 2],
@@ -84,7 +86,11 @@ function App() {
   return Math.max(firstIndexNumOfOccur, secondIndexNumOfOccur) >= 4;
 }
 
-  const theBoard = <GameBoard />;
+  const [playerOnePlays, setPlayerOnePlays] = React.useState([])
+  const [playerTwoPlays, setPlayerTwoPlays] = React.useState([])
+
+  const theBoard = <GameBoard handlePlayerOne={setPlayerOnePlays} handlePlayerTwo={setPlayerTwoPlays} />;
+
   return (
     <div className="App">
       {theBoard}
