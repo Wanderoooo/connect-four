@@ -21,8 +21,7 @@ React.useEffect(() => {
   setTurn(prevTurn => !prevTurn)
 
   function handleWin(plays) {
-    const isPlayerWin = checkGreaterEqualsFour(plays)
-    // checkCross(plays); 
+    const isPlayerWin = checkGreaterEqualsFour(plays) || checkCross(plays); 
     return isPlayerWin;
   }
 
@@ -32,18 +31,16 @@ React.useEffect(() => {
     }
   
     const lastPlay = plays[plays.length - 1];
-
-  
-    const diagSolutionsTArray = makeDiagSolutionsTArray(lastPlay); // all diagonal solution based on selected id
+    const diagSolutionsTArray = makeDiagSolutionsTArray(lastPlay); 
     let isPlayerWin = false;
   
     for (let i = 0; i < diagSolutionsTArray.length; i++) {
-      if (diagSolutionsTArray[i].every(element => plays.includes(element))) {
+
+      if (diagSolutionsTArray[i].every(arr => plays.some(subArr => JSON.stringify(subArr) === JSON.stringify(arr)))) {
         isPlayerWin = true;
         break;
       }
     }
-  
     return isPlayerWin
   
   }
@@ -53,10 +50,9 @@ React.useEffect(() => {
   setTurn(prevTurn => !prevTurn)
   const isWinStatus = handleWin(playerYellowPlays)
   setIsWin(isWinStatus)
-  
+
   function handleWin(plays) {
-    const isPlayerWin = checkGreaterEqualsFour(plays)
-    // checkCross(plays); 
+    const isPlayerWin = checkGreaterEqualsFour(plays) || checkCross(plays); 
     return isPlayerWin;
   }
 
@@ -67,11 +63,11 @@ React.useEffect(() => {
   
     const lastPlay = plays[plays.length - 1];
   
-    const diagSolutionsTArray = makeDiagSolutionsTArray(lastPlay); // all diagonal solution based on selected id
+    const diagSolutionsTArray = makeDiagSolutionsTArray(lastPlay);
     let isPlayerWin = false;
   
     for (let i = 0; i < diagSolutionsTArray.length; i++) {
-      if (diagSolutionsTArray[i].every(element => plays.includes(element))) {
+      if (diagSolutionsTArray[i].every(arr => plays.some(subArr => JSON.stringify(subArr) === JSON.stringify(arr)))) {
         isPlayerWin = true;
         break;
       }
@@ -84,46 +80,27 @@ React.useEffect(() => {
 
 
 function makeDiagSolutionsTArray(selectedIdArray) {
-  let allDiagSolnTArray = [
-    [
-      [selectedIdArray[0] - 3, selectedIdArray[0] + 3],
-      [selectedIdArray[0] - 2, selectedIdArray[0] + 2],
-      [selectedIdArray[0] - 1, selectedIdArray[0] + 1],
-      [selectedIdArray[0], selectedIdArray[0]]
-    ],
-
-    [
-      [selectedIdArray[0] - 2, selectedIdArray[0] + 2],
-      [selectedIdArray[0] - 1, selectedIdArray[0] + 1],
-      [selectedIdArray[0], selectedIdArray[0]],
-      [selectedIdArray[0] + 1, selectedIdArray[0] - 1]
-    ]
-  ]
-
-  for (let i = 0; i < 8; i++) {
-    let aSoln = [];
-    let bSoln = [];
+  let allDiagSolnTArray = [];
 
     for (let j = 3; j >= 0; j--) {
-      aSoln = [
-        [selectedIdArray[0] - j, selectedIdArray[0] + j],
-        [selectedIdArray[0] + 1 - j, selectedIdArray[0] - 1 + j],
-        [selectedIdArray[0] + 2 - j, selectedIdArray[0] - 2 + j],
-        [selectedIdArray[0] + 3 - j, selectedIdArray[0] - 3 + j]
+      const aSoln = [
+        [selectedIdArray[0] - j, selectedIdArray[1] + j], // top right bottom left diagonal
+        [selectedIdArray[0] + 1 - j, selectedIdArray[1] - 1 + j],
+        [selectedIdArray[0] + 2 - j, selectedIdArray[1] - 2 + j],
+        [selectedIdArray[0] + 3 - j, selectedIdArray[1] - 3 + j],
       ]
 
-      bSoln = [
-        [selectedIdArray[0] - j, selectedIdArray[0] - j],
-        [selectedIdArray[0] + 1 - j, selectedIdArray[0] + 1 - j],
-        [selectedIdArray[0] + 2 - j, selectedIdArray[0] + 2 - j],
-        [selectedIdArray[0] + 3 - j, selectedIdArray[0] + 3 - j]
+      allDiagSolnTArray.push(aSoln);
+
+      const bSoln = [
+        [selectedIdArray[0] - j, selectedIdArray[1] - j], // top left bottom right diagonal
+        [selectedIdArray[0] + 1 - j, selectedIdArray[1] + 1 - j],
+        [selectedIdArray[0] + 2 - j, selectedIdArray[1] + 2 - j],
+        [selectedIdArray[0] + 3 - j, selectedIdArray[1] + 3 - j],
       ]
+
+      allDiagSolnTArray.push(bSoln);
     }
-
-    allDiagSolnTArray.push(aSoln)
-    allDiagSolnTArray.push(bSoln)
-  }
-
 
   return allDiagSolnTArray;
 }
