@@ -6,90 +6,151 @@ import './App.css';
 function App() {
 
   const [isWin, setIsWin] = React.useState(false)
+  const [playerRedPlays, setPlayerRedPlays] = React.useState([])
+  const [playerYellowPlays, setPlayerYellowPlays] = React.useState([])
+  // true -> red
+  // false -> yellow
+  const [turn, setTurn] = React.useState(true);
+
   
-  function handleWin({selectedIdArray, idsDoubleArray}) {
-    const isWin = checkGreaterEqualsFour(selectedIdArray, idsDoubleArray) ||
-    checkCross(selectedIdArray, idsDoubleArray);
+  
 
-    return isWin;
+React.useEffect(() => {
+  const isWinStatus = handleWin(playerRedPlays);
+  setIsWin(isWinStatus)
+  setTurn(prevTurn => !prevTurn)
+
+  function handleWin(plays) {
+    const isPlayerWin = checkGreaterEqualsFour(plays)
+    // checkCross(plays); 
+    return isPlayerWin;
   }
 
-  function checkCross(selectedIdArray, idsDoubleArray) {
-    const diagSolutionsTArray = makeDiagSolutionsTArray(selectedIdArray)
-    const includeSelectedIdDArray = idsDoubleArray.push(selectedIdArray)
+  function checkCross(plays) {
+    if (plays.length - 1 < 0) {
+      return false;
+    }
+  
+    const lastPlay = plays[plays.length - 1];
 
+  
+    const diagSolutionsTArray = makeDiagSolutionsTArray(lastPlay); // all diagonal solution based on selected id
+    let isPlayerWin = false;
+  
     for (let i = 0; i < diagSolutionsTArray.length; i++) {
-      if (diagSolutionsTArray.every(element => includeSelectedIdDArray.includes(element))) {
-        return true;
+      if (diagSolutionsTArray[i].every(element => plays.includes(element))) {
+        isPlayerWin = true;
+        break;
       }
     }
+  
+    return isPlayerWin
+  
+  }
+}, [playerRedPlays])
 
+React.useEffect(() => {
+  setTurn(prevTurn => !prevTurn)
+  const isWinStatus = handleWin(playerYellowPlays)
+  setIsWin(isWinStatus)
+  
+  function handleWin(plays) {
+    const isPlayerWin = checkGreaterEqualsFour(plays)
+    // checkCross(plays); 
+    return isPlayerWin;
   }
 
-  function makeDiagSolutionsTArray(selectedIdArray) {
-    let allDiagSolnTArray = [
-      [
-        [selectedIdArray[0] - 3, selectedIdArray[0] + 3],
-        [selectedIdArray[0] - 2, selectedIdArray[0] + 2],
-        [selectedIdArray[0] - 1, selectedIdArray[0] + 1],
-        [selectedIdArray[0], selectedIdArray[0]]
-      ],
+  function checkCross(plays) {
+    if (plays.length - 1 < 0) {
+      return false;
+    }
+  
+    const lastPlay = plays[plays.length - 1];
+  
+    const diagSolutionsTArray = makeDiagSolutionsTArray(lastPlay); // all diagonal solution based on selected id
+    let isPlayerWin = false;
+  
+    for (let i = 0; i < diagSolutionsTArray.length; i++) {
+      if (diagSolutionsTArray[i].every(element => plays.includes(element))) {
+        isPlayerWin = true;
+        break;
+      }
+    }
+  
+    return isPlayerWin;
+  
+  }
+}, [playerYellowPlays])
 
-      [
-        [selectedIdArray[0] - 2, selectedIdArray[0] + 2],
-        [selectedIdArray[0] - 1, selectedIdArray[0] + 1],
-        [selectedIdArray[0], selectedIdArray[0]],
-        [selectedIdArray[0] + 1, selectedIdArray[0] - 1]
-      ]
+
+function makeDiagSolutionsTArray(selectedIdArray) {
+  let allDiagSolnTArray = [
+    [
+      [selectedIdArray[0] - 3, selectedIdArray[0] + 3],
+      [selectedIdArray[0] - 2, selectedIdArray[0] + 2],
+      [selectedIdArray[0] - 1, selectedIdArray[0] + 1],
+      [selectedIdArray[0], selectedIdArray[0]]
+    ],
+
+    [
+      [selectedIdArray[0] - 2, selectedIdArray[0] + 2],
+      [selectedIdArray[0] - 1, selectedIdArray[0] + 1],
+      [selectedIdArray[0], selectedIdArray[0]],
+      [selectedIdArray[0] + 1, selectedIdArray[0] - 1]
     ]
+  ]
 
-    for (let i = 0; i < 8; i++) {
-      let aSoln = [];
-      let bSoln = [];
+  for (let i = 0; i < 8; i++) {
+    let aSoln = [];
+    let bSoln = [];
 
-      for (let j = 3; j >= 0; j--) {
-        aSoln = [
-          [selectedIdArray[0] - j, selectedIdArray[0] + j],
-          [selectedIdArray[0] + 1 - j, selectedIdArray[0] - 1 + j],
-          [selectedIdArray[0] + 2 - j, selectedIdArray[0] - 2 + j],
-          [selectedIdArray[0] + 3 - j, selectedIdArray[0] - 3 + j]
-        ]
+    for (let j = 3; j >= 0; j--) {
+      aSoln = [
+        [selectedIdArray[0] - j, selectedIdArray[0] + j],
+        [selectedIdArray[0] + 1 - j, selectedIdArray[0] - 1 + j],
+        [selectedIdArray[0] + 2 - j, selectedIdArray[0] - 2 + j],
+        [selectedIdArray[0] + 3 - j, selectedIdArray[0] - 3 + j]
+      ]
 
-        bSoln = [
-          [selectedIdArray[0] - j, selectedIdArray[0] - j],
-          [selectedIdArray[0] + 1 - j, selectedIdArray[0] + 1 - j],
-          [selectedIdArray[0] + 2 - j, selectedIdArray[0] + 2 - j],
-          [selectedIdArray[0] + 3 - j, selectedIdArray[0] + 3 - j]
-        ]
-      }
-
-      allDiagSolnTArray.push(aSoln)
-      allDiagSolnTArray.push(bSoln)
+      bSoln = [
+        [selectedIdArray[0] - j, selectedIdArray[0] - j],
+        [selectedIdArray[0] + 1 - j, selectedIdArray[0] + 1 - j],
+        [selectedIdArray[0] + 2 - j, selectedIdArray[0] + 2 - j],
+        [selectedIdArray[0] + 3 - j, selectedIdArray[0] + 3 - j]
+      ]
     }
 
-
-    return allDiagSolnTArray;
+    allDiagSolnTArray.push(aSoln)
+    allDiagSolnTArray.push(bSoln)
   }
 
-  function checkGreaterEqualsFour(selectedIdArray, idsDoubleArray) {
-    let firstIndexNumOfOccur = 0;
-    let secondIndexNumOfOccur = 0;
 
-    for (let i = 0; i < idsDoubleArray.length; i++) {
-      if (idsDoubleArray[i][0] === selectedIdArray[0]) {
-        firstIndexNumOfOccur++;
-      } else if (idsDoubleArray[i][1] === selectedIdArray[1]) {
-        secondIndexNumOfOccur++;
-      }
+  return allDiagSolnTArray;
+}
+
+function checkGreaterEqualsFour(plays) {
+  let firstIndexNumOfOccur = 0;
+  let secondIndexNumOfOccur = 0;
+
+  if (plays.length - 1 < 0) {
+    return false;
   }
+
+  const lastPlay = plays[plays.length - 1]
+
+  for (let i = 0; i < plays.length; i++) {
+    if (plays[i][0] === lastPlay[0]) {
+      firstIndexNumOfOccur++;
+    } else if (plays[i][1] === lastPlay[1]) {
+      secondIndexNumOfOccur++;
+    }
+}
 
   return Math.max(firstIndexNumOfOccur, secondIndexNumOfOccur) >= 4;
 }
 
-  const [playerOnePlays, setPlayerOnePlays] = React.useState([])
-  const [playerTwoPlays, setPlayerTwoPlays] = React.useState([])
 
-  const theBoard = <GameBoard handlePlayerOne={setPlayerOnePlays} handlePlayerTwo={setPlayerTwoPlays} />;
+  const theBoard = <GameBoard handlePlayerRedPlays={setPlayerRedPlays} handlePlayerYellowPlays={setPlayerYellowPlays} winStat={isWin} turn={turn} />;
 
   return (
     <div className="App">

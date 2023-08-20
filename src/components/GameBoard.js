@@ -18,10 +18,6 @@ export default function GameBoard(props) {
         }
         return res;
     });
-
-    // true -> red
-    // false -> yellow
-    const [turn, setTurn] = useState(true);
     
     
     const changePiece = (row, column, newPiece) => {
@@ -29,15 +25,31 @@ export default function GameBoard(props) {
         for (let i = 0; i < pieces.length; i++) {
             res.push(pieces[i]);
         }
+
         res[row][column] = newPiece;
         setPieces(res);
+        const saveArray = [row, column]
+
+        
+
+        if (props.turn) {
+
+            props.handlePlayerRedPlays(prevPlays => {
+                return [...prevPlays, saveArray]
+            })
+            
+        } else {
+            props.handlePlayerYellowPlays(prevPlays => [...prevPlays, saveArray])
+        }
+        
     }
 
 
     //drops a colored piece at specified column, 1-based indexing
     function drop(column) {
+        
         let toDrop;
-        if (turn) {
+        if (props.turn) {
             toDrop = <GamePiece color={'red'} id={[99, column]}/>;
         } else {
             toDrop = <GamePiece color={'yellow'} id={[99, column]}/>;
@@ -47,9 +59,8 @@ export default function GameBoard(props) {
             pieceCol.push(pieces[i][column - 1])
         }
         if (findHighestFilled(pieceCol) !== pieceCol.length) {
-            console.log(pieces[0][0]);
             changePiece(6 - findHighestFilled(pieceCol), column - 1, toDrop);
-            setTurn(turn => !turn);
+            // props.handleTurn(prevTurn => !prevTurn);
         }
 
             
@@ -68,7 +79,9 @@ export default function GameBoard(props) {
     }
 
     return (
-        <>
+        <div>{props.winStat ? <h1>{`player ${!props.turn ? "red" : "yellow"} wins!`}</h1>
+        :
+        <div>
             <table className="drops board">
                 <tr>
                     <td><DropArrow click={function(){drop(1)}} /></td>
@@ -91,6 +104,7 @@ export default function GameBoard(props) {
                     )}
                 )}
             </table>
-        </>
+        </div>}
+        </div>
     )
 }
