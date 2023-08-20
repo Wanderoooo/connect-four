@@ -19,10 +19,9 @@ export default function GameBoard(props) {
         return res;
     });
 
-    // 0 -> game over
-    // 1 -> red
-    // 2 -> yellow
-    const [turn, setTurn] = useState(1);
+    // true -> red
+    // false -> yellow
+    const [turn, setTurn] = useState(true);
     
     
     const changePiece = (row, column, newPiece) => {
@@ -38,9 +37,9 @@ export default function GameBoard(props) {
     //drops a colored piece at specified column, 1-based indexing
     function drop(column) {
         let toDrop;
-        if (turn === 1) {
+        if (turn) {
             toDrop = <GamePiece color={'red'} id={[99, column]}/>;
-        } else if (turn === 2) {
+        } else {
             toDrop = <GamePiece color={'yellow'} id={[99, column]}/>;
         }
         let pieceCol = [];
@@ -50,7 +49,7 @@ export default function GameBoard(props) {
         if (findHighestFilled(pieceCol) !== pieceCol.length) {
             console.log(pieces[0][0]);
             changePiece(6 - findHighestFilled(pieceCol), column - 1, toDrop);
-            if (turn === 1) {setTurn(2)} else if (turn === 2) {setTurn(1)};
+            setTurn(turn => !turn);
         }
 
             
