@@ -4,7 +4,7 @@ import GamePiece from "./GamePiece";
 import './GameBoard.css';
 import DropArrow from "./DropArrow";
 
-export default function GameBoard() {
+export default function GameBoard(props) {
 
     const [pieces, setPieces] = useState(() => {
         let res = [];
@@ -18,11 +18,6 @@ export default function GameBoard() {
         }
         return res;
     });
-
-    // 0 -> game over
-    // 1 -> red
-    // 2 -> yellow
-    const [turn, setTurn] = useState(1);
     
     
     const changePiece = (row, column, newPiece) => {
@@ -30,17 +25,33 @@ export default function GameBoard() {
         for (let i = 0; i < pieces.length; i++) {
             res.push(pieces[i]);
         }
+
         res[row][column] = newPiece;
         setPieces(res);
+        const saveArray = [row, column]
+
+        
+
+        if (props.turn) {
+
+            props.handlePlayerRedPlays(prevPlays => {
+                return [...prevPlays, saveArray]
+            })
+            
+        } else {
+            props.handlePlayerYellowPlays(prevPlays => [...prevPlays, saveArray])
+        }
+        
     }
 
 
     //drops a colored piece at specified column, 1-based indexing
     function drop(column) {
+        
         let toDrop;
-        if (turn === 1) {
+        if (props.turn) {
             toDrop = <GamePiece color={'red'} id={[99, column]}/>;
-        } else if (turn === 2) {
+        } else {
             toDrop = <GamePiece color={'yellow'} id={[99, column]}/>;
         }
         let pieceCol = [];
@@ -48,9 +59,8 @@ export default function GameBoard() {
             pieceCol.push(pieces[i][column - 1])
         }
         if (findHighestFilled(pieceCol) !== pieceCol.length) {
-            console.log(pieces[0][0]);
             changePiece(6 - findHighestFilled(pieceCol), column - 1, toDrop);
-            if (turn === 1) {setTurn(2)} else if (turn === 2) {setTurn(1)};
+            // props.handleTurn(prevTurn => !prevTurn);
         }
 
             
@@ -69,7 +79,9 @@ export default function GameBoard() {
     }
 
     return (
-        <>
+        <div>{props.winStat ? <h1>{`player ${!props.turn ? "red" : "yellow"} wins!`}</h1>
+        :
+        <div>
             <table className="drops board">
                 <tr>
                     <td><DropArrow click={function(){drop(1)}} /></td>
@@ -92,6 +104,7 @@ export default function GameBoard() {
                     )}
                 )}
             </table>
-        </>
+        </div>}
+        </div>
     )
 }
