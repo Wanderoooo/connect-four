@@ -5,7 +5,7 @@ import './GameBoard.css';
 import DropArrow from "./DropArrow";
 
 export default function GameBoard(props) {
-
+    const [color, setColor] = React.useState("red")
     const [pieces, setPieces] = useState(() => {
         let res = [];
         let row = [];
@@ -19,6 +19,14 @@ export default function GameBoard(props) {
         return res;
     });
     
+    React.useEffect(() => {
+        if (!props.turn) {
+            setColor(() => "red")
+        } else {
+            setColor(() => "yellow")
+        }
+        
+    }, [props.turn])
     
     const changePiece = (row, column, newPiece) => {
         const res = [];
@@ -79,9 +87,8 @@ export default function GameBoard(props) {
     }
 
     return (
-        <div>{props.winStat ? <h1>{`player ${!props.turn ? "red" : "yellow"} wins!`}</h1>
+        <div>{props.winStat ? <h1>{`player ${color} wins!`}</h1>
         :
-        <div>
             <table className="drops board">
                 <tr>
                     <td><DropArrow click={function(){drop(1)}} /></td>
@@ -93,6 +100,7 @@ export default function GameBoard(props) {
                     <td><DropArrow click={function(){drop(7)}} /></td>
                 </tr>
             </table>
+        }
             <table className="board">
                 {pieces.map((row) => {
                     return (
@@ -104,7 +112,6 @@ export default function GameBoard(props) {
                     )}
                 )}
             </table>
-        </div>}
         </div>
     )
 }
