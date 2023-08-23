@@ -18,7 +18,7 @@ export default function GameBoard(props) {
         }
         return res;
     });
-    
+    //hehe
     React.useEffect(() => {
         if (!props.turn) {
             setColor(() => "red")
